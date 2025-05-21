@@ -1,0 +1,37 @@
+CREATE TABLE customers(
+  customer_id INT PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100)
+);
+INSERT INTO customers (customer_id,name,email)VALUES
+(1,'Alice Johnson','alice@example.com'),
+(2,'Bob Smith','bob@example.com'),
+(3,'Charlie Lee','charlie@example.com'),
+(4,'Diana King','diana@example.com'),
+(5,'Edward Nash','edward@example.com'),
+(6,'Fiona White','fiona@example.com');
+CREATE TABLE orders(
+  order_id INT PRIMARY KEY,
+  order_date DATE,
+  customer_id INT,
+  item VARCHAR(100)
+);
+
+INSERT INTO orders(order_id,order_date,customer_id,item)VALUES
+(101,'2024-05-01',1,'Laptop'),
+(102,'2024-05-03',2,'Mouse'),
+(103,'2024-05-05',5,'Monitor');
+
+SELECT
+	c.customer_id,
+    c.name,
+    c.email,
+    o.order_id,
+    o.order_date,
+    o.item
+FROM
+	customers c
+LEFT JOIN
+	orders o ON c.customer_id=o.customer_id
+ORDER BY
+	c.customer_id;
