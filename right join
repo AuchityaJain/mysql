@@ -1,0 +1,43 @@
+
+-- Step 1: Create the customers table
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+-- Step 2: Insert fewer customers
+INSERT INTO customers (customer_id, name, email) VALUES
+(1, 'Alice Johnson', 'alice@example.com'),
+(2, 'Bob Smith', 'bob@example.com');
+
+-- Step 3: Create the orders table (NO foreign key constraint)
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    order_date DATE,
+    customer_id INT,
+    item VARCHAR(100)
+);
+
+-- Step 4: Insert orders — some with unmatched customer_ids
+INSERT INTO orders (order_id, order_date, customer_id, item) VALUES
+(101, '2024-05-01', 1, 'Laptop'),      -- Match
+(102, '2024-05-03', 2, 'Mouse'),       -- Match
+(103, '2024-05-04', 3, 'Keyboard'),    -- No matching customer
+(104, '2024-05-05', 4, 'Monitor'),     -- No matching customer
+(105, '2024-05-06', NULL, 'Webcam');   -- NULL customer
+
+-- Step 5: RIGHT JOIN from customers to orders
+SELECT
+    o.order_id,
+    o.order_date,
+    o.item,
+    o.customer_id,
+    c.name AS customer_name,
+    c.email AS customer_email
+FROM
+    customers c
+RIGHT JOIN
+    orders o ON c.customer_id = o.customer_id
+ORDER BY
+    o.order_id;
